@@ -1,1 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta name="description" content="Generate Free Fire access tokens easily. Extract Eat tokens from URLs and get your FF token instantly.">
+    <title>Reju X Tools</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com">
+    </script>
+    <style>
+        /* ── fonts ── */
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Rajdhani:wght@500;600;700&display=swap');
 
+        :root {
+            --primary: #3b82f6;
+            --primary-light: #60a5fa;
+            --primary-glow: rgba(59, 130, 246, 0.35);
+            --dark-bg: #030014;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background-color: var(--dark-bg);
+            color: #e2e8f0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+            padding: 20px;
+            background-image:
+                radial-gradient(ellipse at 30% 40%, rgba(59, 130, 246, 0.08) 0%, transparent 60%),
+                radial-gradient(ellipse at 70% 60%, rgba(96, 165, 250, 0.05) 0%, transparent 50%),
+                linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%, 30px 30px, 30px 30px;
+        }
+
+        /* ── card ── */
+        .cyber-card {
+            background: rgba(10, 10, 12, 0.75);
+            backdrop-filter: blur(28px);
+            -webkit-backdrop-filter: blur(28px);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 28px;
+            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.03);
+            position: relative;
+            overflow: hidden;
+            transition: box-shadow 0.4s ease;
+        }
+        .cyber-card:hover {
+            box-shadow: 0 35px 70px -15px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        }
+        .cyber-card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: 28px;
+            padding: 1px;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.10), transparent 55%);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+
+        /* ── glow orb ── */
+        .glow-orb {
+            position: absolute;
+            width: 280px;
+            height: 280px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.12), transparent 70%);
+            top: -80px;
+            right: -80px;
+            pointer-events: none;
+            filter: blur(40px);
+            animation: orbFloat 10s ease-in-out infinite alternate;
+        }
+        @keyframes orbFloat {
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+            100% {
+                transform: translate(-20px, 20px) scale(1.1);
+            }
+        }
+
+        /* ── title ── */
+        .title-font {
+            font-family: 'Rajdhani', sans-serif;
+        }
+
+        /* ── input ── */
+        .cyber-input {
+            background: rgba(0, 0, 0, 0.45);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            color: #fff;
+            font-family: 'Space Grotesk', monospace;
+            transition: all 0.3s ease;
+            border-radius: 14px;
+            padding: 16px 20px;
+            width: 100%;
+            font-size: 14px;
+            letter-spacing: 0.3px;
+        }
+        .cyber-input:focus {
+            border-color: var(--primary);
+            background: rgba(0, 0, 0, 0.6);
+            box-shadow: 0 0 0 4px var(--primary-glow), 0 0 30px rgba(59, 130, 246, 0.10);
+            outline: none;
+        }
+        .cyber-input::placeholder {
+            color: #4a5568;
+            font-weight: 400;
+        }
+
+        /* ── button ── */
+        .btn-grad {
+            background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 50%, #3b82f6 100%);
+            background-size: 200% 200%;
+            border: none;
+            border-radius: 14px;
+            padding: 16px 24px;
+            font-weight: 700;
+            font-size: 15px;
+            letter-spacing: 0.8px;
+            color: #fff;
+            width: 100%;
+            transition: all 0.4s ease;
+            box-shadow: 0 4px 24px rgba(59, 130, 246, 0.25);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-grad::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), transparent 60%);
+            pointer-events: none;
+            border-radius: 14px;
+        }
+        .btn-grad:hover {
+            background-position: 100% 100%;
+            box-shadow: 0 6px 32px rgba(59, 130, 246, 0.40);
+            transform: translateY(-2px);
+        }
+        .btn-grad:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        /* ── social icons ── */
+        .social-icon-btn {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.25s ease;
+        }
+        .social-icon-btn:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-3px);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        /* ── info grid ── */
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+        .info-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 10px 14px;
+            transition: background 0.2s;
+        }
+        .info-item:hover {
+            background: rgba(255, 255, 255, 0.06);
+        }
+        .info-item .label {
+            font-size: 9px;
+            text-transform: uppercase;
+            color: var(--primary-light);
+            letter-spacing: 0.6px;
+            font-weight: 600;
+        }
+        .info-item .value {
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+            margin-top: 2px;
+            font-family: 'Space Grotesk', monospace;
+        }
+
+        /* ── scroll boxes ── */
+        .scroll-box,
+        .scroll-box-large,
+        .scroll-box-token {
+            background: rgba(59, 130, 246, 0.06);
+            border-left: 3px solid var(--primary);
+            padding: 12px 16px;
+            border-radius: 10px;
+            font-family: 'Space Grotesk', monospace;
+            font-size: 11px;
+            word-break: break-all;
+            color: #d1d5db;
+            transition: background 0.3s;
+        }
+        .scroll-box {
+            max-height: 120px;
+            overflow-y: auto;
+        }
+        .scroll-box-large {
+            max-height: 220px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+        .scroll-box-token {
+            max-height: 140px;
+            overflow-y: auto;
+        }
+        .scroll-box::-webkit-scrollbar,
+        .scroll-box-large::-webkit-scrollbar,
+        .scroll-box-token::-webkit-scrollbar {
+            width: 4px;
+        }
+        .scroll-box::-webkit-scrollbar-track,
+        .scroll-box-large::-webkit-scrollbar-track,
+        .scroll-box-token::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 4px;
+        }
+        .scroll-box::-webkit-scrollbar-thumb,
+        .scroll-box-large::-webkit-scrollbar-thumb,
+        .scroll-box-token::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 4px;
+        }
+
+        /* ── copy feedback ── */
+        .copy-btn-success {
+            background-color: #10b981 !important;
+            transition: 0.2s;
+        }
+
+        /* ── modal ── */
+        .modal-overlay {
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* ── animations ── */
+        .animate-in {
+            animation: fadeUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(16px) scale(0.98);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* ── banner ── */
+        #bannerImage {
+            object-fit: contain;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            max-height: 200px;
+        }
+
+        /* ── social link blocks ── */
+        .social-link-block {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 10px 14px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.25s ease;
+            color: #9ca3af;
+            text-decoration: none;
+        }
+        .social-link-block:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.12);
+            color: #fff;
+            transform: translateY(-2px);
+        }
+        .social-link-block img {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+
+        /* ── LOADING OVERLAY ── */
+        #loadingOverlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(3, 0, 20, 0.88);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+            padding: 30px;
+        }
+        #loadingOverlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .loader-ring {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            border: 3px solid rgba(59, 130, 246, 0.12);
+            border-top-color: var(--primary);
+            border-right-color: var(--primary-light);
+            animation: spin 0.9s cubic-bezier(0.6, 0, 0.4, 1) infinite;
+            box-shadow: 0 0 40px rgba(59, 130, 246, 0.15);
+        }
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .loader-pulse {
+            margin-top: 28px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .loader-pulse span {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--primary);
+            animation: pulseDot 1.4s ease-in-out infinite both;
+        }
+        .loader-pulse span:nth-child(1) {
+            animation-delay: -0.32s;
+        }
+        .loader-pulse span:nth-child(2) {
+            animation-delay: -0.16s;
+        }
+        .loader-pulse span:nth-child(3) {
+            animation-delay: 0s;
+        }
+        @keyframes pulseDot {
+            0%,
+            80%,
+            100% {
+                transform: scale(0.6);
+                opacity: 0.3;
+            }
+            40% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .loader-text {
+            margin-top: 18px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #94a3b8;
+            letter-spacing: 1px;
+            font-family: 'Rajdhani', sans-serif;
+            text-transform: uppercase;
+        }
+
+        /* ── responsive tweaks ── */
+        @media (max-width: 480px) {
+            .info-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 6px;
+            }
+            .info-item {
+                padding: 8px 10px;
+            }
+            .info-item .value {
+                font-size: 12px;
+            }
+            .cyber-card {
+                padding: 18px !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ═══ LOADING OVERLAY ═══ -->
+    <div id="loadingOverlay">
+        <div class="loader-ring"></div>
+        <div class="loader-pulse">
+            <span></span><span></span><span></span>
+        </div>
+        <div class="loader-text" id="loaderStatus">Generating Access…</div>
+    </div>
+
+    <!-- ═══ MAIN CARD ═══ -->
+    <div class="w-full max-w-[480px] relative z-10">
+        <div class="cyber-card p-6 sm:p-7">
+
+            <!-- glow orb -->
+            <div class="glow-orb"></div>
+
+            <!-- header -->
+            <div class="flex flex-col items-center mb-5 relative z-10">
+                <div class="relative w-20 h-20 mb-3 rounded-full p-1 bg-gradient-to-tr from-blue-500 to-cyan-400 shadow-[0_0_40px_rgba(59,130,246,0.30)]">
+                    <img src="https://avatars.githubusercontent.com/u/167861948?v=4" class="w-full h-full rounded-full object-cover bg-black" alt="Logo">
+                </div>
+                <h1 class="text-2xl font-bold title-font text-white text-center leading-tight tracking-wide">
+                    REJU X TOOLS
+                    <br>
+                    <span class="text-blue-400 text-lg font-normal tracking-wider">Access Generator</span>
+                </h1>
+            </div>
+
+            <!-- how-to -->
+            <div class="bg-white/5 border border-white/10 rounded-xl p-4 mb-6 relative z-10">
+                <div class="flex items-center gap-2 mb-3 border-b border-white/5 pb-2">
+                    <i class="fas fa-book-open text-blue-400 text-xs"></i>
+                    <span class="text-xs font-bold text-white uppercase tracking-wider">How to use</span>
+                </div>
+                <div class="space-y-4">
+                    <div class="flex gap-3 text-[11px] text-gray-400">
+                        <span class="bg-blue-500/20 text-blue-400 font-bold px-2 py-0.5 rounded text-[10px] h-fit mt-0.5">1</span>
+                        <div>
+                            <p>Select Provider &amp; Login below.</p>
+                            <p class="text-[10px] text-green-500 mt-0.5"><i class="fas fa-shield-alt"></i> Safe: Official Garena Server</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-3 text-[11px] text-gray-400">
+                        <span class="bg-blue-500/20 text-blue-400 font-bold px-2 py-0.5 rounded text-[10px] h-fit mt-0.5">2</span>
+                        <div class="w-full">
+                            <p class="mb-2">After login, copy URL containing <code class="text-blue-300">eat=</code></p>
+                            <div class="bg-blue-500/5 border border-blue-500/10 p-2 rounded mb-2">
+                                <p class="text-[10px] text-gray-400 mb-1">Example URL:</p>
+                                <code class="text-[9px] text-gray-300 break-all block leading-tight">https://discstore.recargajogo.com.br/?eat=14f060774299fb93a5...&amp;lang=en&amp;region=IND</code>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex gap-3 text-[11px] text-gray-400">
+                        <span class="bg-blue-500/20 text-blue-400 font-bold px-2 py-0.5 rounded text-[10px] h-fit mt-0.5">3</span>
+                        <p>Paste URL or <strong class="text-white">Eat Token</strong> below and click GENERATE</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- provider login -->
+            <div class="mb-5 relative z-10">
+                <div class="flex justify-between items-end mb-2">
+                    <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Select Provider</span>
+                </div>
+                <div class="grid grid-cols-5 gap-2">
+                    <a href="https://auth.garena.com/universal/oauth?platform=8&response_type=code&locale=en-SG&client_id=100067&redirect_uri=https://api.ff.garena.co.id/auth/auth/callback_n?site=https://api-discountstore.gid.recargajogo.com.br/oauth/callback_redirect/" target="_blank" class="social-icon-btn">
+                        <img src="https://raw.githubusercontent.com/KillerSharmaBot/Eat-Token/refs/heads/main/image/Google.png" class="w-5 h-5 object-contain" alt="Google">
+                    </a>
+                    <a href="https://auth.garena.com/universal/oauth?platform=3&response_type=code&locale=en-SG&client_id=100067&redirect_uri=https://api.ff.garena.co.id/auth/auth/callback_n?site=https://api-discountstore.gid.recargajogo.com.br/oauth/callback_redirect/" target="_blank" class="social-icon-btn">
+                        <img src="https://raw.githubusercontent.com/KillerSharmaBot/Eat-Token/refs/heads/main/image/Facebook.png" class="w-5 h-5 object-contain" alt="Facebook">
+                    </a>
+                    <a href="https://auth.garena.com/universal/oauth?platform=10&response_type=code&locale=en-SG&client_id=100067&redirect_uri=https://api.ff.garena.co.id/auth/auth/callback_n?site=https://api-discountstore.gid.recargajogo.com.br/oauth/callback_redirect/" target="_blank" class="social-icon-btn">
+                        <i class="fab fa-apple text-xl text-white"></i>
+                    </a>
+                    <a href="https://auth.garena.com/universal/oauth?platform=11&response_type=code&locale=en-SG&client_id=100067&redirect_uri=https://api.ff.garena.co.id/auth/auth/callback_n?site=https://api-discountstore.gid.recargajogo.com.br/oauth/callback_redirect/" target="_blank" class="social-icon-btn">
+                        <img src="https://raw.githubusercontent.com/KillerSharmaBot/Eat-Token/refs/heads/main/image/X.png" class="w-5 h-5 object-contain rounded-full" alt="X">
+                    </a>
+                    <a href="https://auth.garena.com/universal/oauth?platform=5&response_type=code&locale=en-SG&client_id=100067&redirect_uri=https://api.ff.garena.co.id/auth/auth/callback_n?site=https://api-discountstore.gid.recargajogo.com.br/oauth/callback_redirect/" target="_blank" class="social-icon-btn">
+                        <img src="https://raw.githubusercontent.com/KillerSharmaBot/Eat-Token/refs/heads/main/image/VK.png" class="w-5 h-5 object-contain rounded-full" alt="VK">
+                    </a>
+                </div>
+            </div>
+
+            <!-- input -->
+            <div class="mb-5 relative z-10">
+                <div class="relative group">
+                    <input type="text" id="tokenInp" class="cyber-input" placeholder="Paste kiosgamer URL or Eat token here…" autocomplete="off">
+                    <button onclick="clearInput()" id="clearBtn" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-red-400 transition hidden">
+                        <i class="fas fa-times text-lg"></i>
+                    </button>
+                </div>
+                <div class="flex justify-between mt-1.5">
+                    <span class="text-[10px] text-gray-600">Supports full URL or raw token</span>
+                </div>
+            </div>
+
+            <!-- generate -->
+            <button onclick="processToken()" id="btn" class="btn-grad mb-6 relative z-10">
+                GENERATE ACCESS <i class="fas fa-arrow-right text-xs"></i>
+            </button>
+
+            <!-- banner -->
+            <div id="bannerContainer" class="hidden animate-in mb-6 relative z-10">
+                <div class="bg-black/30 border border-blue-500/20 rounded-xl p-4">
+                    <div class="text-[10px] font-bold text-blue-400 uppercase tracking-wider mb-3 text-center">Player Banner</div>
+                    <div id="bannerImageWrapper" class="flex justify-center">
+                        <img id="bannerImage" src="" alt="Player Banner" class="rounded-lg w-full" style="max-height:200px;object-fit:contain;">
+                    </div>
+                </div>
+            </div>
+
+            <!-- output -->
+            <div id="output" class="hidden animate-in mb-6 relative z-10">
+                <div class="bg-black/30 border border-blue-500/20 rounded-xl p-4 relative overflow-hidden">
+                    <div class="info-grid">
+                        <div class="info-item"><div class="label">Nickname</div><div class="value" id="nick">-</div></div>
+                        <div class="info-item"><div class="label">Region</div><div class="value" id="reg">-</div></div>
+                        <div class="info-item"><div class="label">Account UID</div><div class="value" id="aid">-</div></div>
+                        <div class="info-item"><div class="label">Level</div><div class="value" id="level">-</div></div>
+                    </div>
+
+                    <div class="mb-4 mt-4">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-[10px] font-bold text-blue-400 uppercase tracking-wider">Access Token</span>
+                            <button onclick="copyAccessTokenOnly()" id="copyTokenBtn" class="text-[10px] bg-blue-600/30 hover:bg-blue-600 px-3 py-1.5 rounded-lg transition flex items-center gap-1.5">
+                                <i class="fas fa-copy text-[10px]"></i> COPY
+                            </button>
+                        </div>
+                        <div class="scroll-box-token" id="accessTokenDisplay">-</div>
+                    </div>
+
+                    <div id="jwtContainer" class="mb-4 hidden">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-[10px] font-bold text-blue-400 uppercase tracking-wider">JWT Token</span>
+                            <button onclick="copyJwtTokenOnly()" id="copyJwtBtn" class="text-[10px] bg-blue-600/30 hover:bg-blue-600 px-3 py-1.5 rounded-lg transition flex items-center gap-1.5">
+                                <i class="fas fa-copy text-[10px]"></i> COPY
+                            </button>
+                        </div>
+                        <div class="scroll-box" id="jwtTokenDisplay">-</div>
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-[10px] font-bold text-blue-400 uppercase tracking-wider">Full API Response</span>
+                            <button onclick="copyFullResponse()" id="copyFullResponseBtn" class="text-[10px] bg-blue-600/30 hover:bg-blue-600 px-3 py-1.5 rounded-lg transition flex items-center gap-1.5">
+                                <i class="fas fa-copy text-[10px]"></i> COPY
+                            </button>
+                        </div>
+                        <div class="scroll-box-large" id="apiResponseDisplay">Waiting for response…</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- error -->
+            <div id="error-box" class="hidden animate-in mb-6 relative z-10">
+                <div class="bg-red-500/10 border border-red-500/25 rounded-xl p-4 text-center">
+                    <i class="fas fa-exclamation-triangle text-red-400 text-2xl mb-2"></i>
+                    <h3 class="text-red-400 font-bold text-sm uppercase tracking-wider" id="error-title">Error</h3>
+                    <p class="text-[10px] text-gray-500 mt-1" id="error-message">Please try again later.</p>
+                </div>
+            </div>
+
+            <!-- footer -->
+            <div class="border-t border-white/5 pt-5 relative z-10">
+                <p class="text-[10px] text-gray-500 text-center uppercase tracking-widest mb-3">Connect With Reju X</p>
+                <div class="grid grid-cols-2 gap-2">
+                    <a href="https://t.me/RejuXTool" target="_blank" class="social-link-block">
+                        <img src="https://raw.githubusercontent.com/KillerSharmaBot/Eat-Token/refs/heads/main/image/Telegram.png" alt="Telegram">
+                        <span class="text-sm font-medium">Telegram</span>
+                    </a>
+                    <a href="https://youtube.com/@KillerSharmaBot" target="_blank" class="social-link-block">
+                        <img src="https://raw.githubusercontent.com/KillerSharmaBot/Eat-Token/refs/heads/main/image/YouTube.png" alt="YouTube">
+                        <span class="text-sm font-medium">YouTube</span>
+                    </a>
+                    <a href="https://instagram.com/KillerSharmaBot" target="_blank" class="social-link-block">
+                        <img src="https://raw.githubusercontent.com/KillerSharmaBot/Eat-Token/refs/heads/main/image/Instagram.png" alt="Instagram">
+                        <span class="text-sm font-medium">Instagram</span>
+                    </a>
+                    <div class="social-link-block opacity-40 cursor-default">
+                        <i class="fas fa-link text-gray-600 text-lg"></i>
+                        <span class="text-sm font-medium text-gray-600">—</span>
+                    </div>
+                </div>
+                <div class="text-center mt-4">
+                    <button onclick="openModal('termsModal')" class="text-[10px] text-gray-600 hover:text-gray-400 underline transition">Terms &amp; Conditions</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ═══ TERMS MODAL ═══ -->
+    <div id="termsModal" class="modal-overlay fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div class="bg-[#0f121a] border border-white/10 w-full max-w-sm rounded-2xl p-6 relative shadow-2xl">
+            <button onclick="closeModal('termsModal')" class="absolute top-4 right-4 text-gray-500 hover:text-white">
+                <i class="fas fa-times"></i>
+            </button>
+            <h3 class="text-lg font-bold text-white mb-4 title-font uppercase tracking-widest text-center">Terms &amp; Conditions</h3>
+            <div class="text-xs text-gray-400 space-y-3 leading-relaxed font-light text-justify">
+                <p>This website does not store any sensitive details. We only store basic data to provide quality &amp; fast service.</p>
+                <p class="text-blue-400"><strong>Disclaimer:</strong> Use this tool at your own risk. The developer is not responsible for any misuse.</p>
+                <p style="color: #f87171;">Do not use these tokens to <strong>violate Garena Terms &amp; Conditions</strong> and do not try any kind of automations.</p>
+                <p>The owner of this web made this tool for educational purpose for developers.</p>
+                <p>By using this website, you explicitly agree to our terms and conditions.</p>
+            </div>
+            <button onclick="closeModal('termsModal')" class="w-full mt-6 py-2.5 rounded-lg bg-white/5 hover:bg-white/10 text-white text-xs font-bold transition">I AGREE</button>
+        </div>
+    </div>
+
+    <!-- ═══ SCRIPTS ═══ -->
+    <script>
+        // ── DOM refs ──
+        const tokenInp = document.getElementById('tokenInp');
+        const clearBtn = document.getElementById('clearBtn');
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        const loaderStatus = document.getElementById('loaderStatus');
+        let currentResponseData = null;
+
+        // ── input clear ──
+        tokenInp.addEventListener('input', function() {
+            clearBtn.classList.toggle('hidden', this.value.length === 0);
+        });
+
+        function clearInput() {
+            tokenInp.value = '';
+            clearBtn.classList.add('hidden');
+            tokenInp.focus();
+        }
+
+        tokenInp.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                processToken();
+            }
+        });
+
+        // ── helpers ──
+        function extractEatToken(input) {
+            if (input.includes('eat=')) {
+                const match = input.match(/[?&]eat=([^&]+)/);
+                if (match && match[1]) return match[1];
+            }
+            return input;
+        }
+
+        // ── loading overlay ──
+        function showLoading(msg) {
+            loaderStatus.textContent = msg || 'Generating Access…';
+            loadingOverlay.classList.add('active');
+        }
+
+        function hideLoading() {
+            loadingOverlay.classList.remove('active');
+        }
+
+        // ── copy functions ──
+        function copyAccessTokenOnly() {
+            if (currentResponseData && currentResponseData.access_token) {
+                copyToClipboard(currentResponseData.access_token, document.getElementById('copyTokenBtn'), 'COPIED!');
+                return;
+            }
+            const el = document.getElementById('accessTokenDisplay');
+            if (el && el.innerText !== '-' && el.innerText !== '--' && el.innerText !== 'No access_token field in response') {
+                copyToClipboard(el.innerText, document.getElementById('copyTokenBtn'), 'COPIED!');
+            } else {
+                alert('No access token available to copy');
+            }
+        }
+
+        function copyJwtTokenOnly() {
+            if (currentResponseData && currentResponseData.token) {
+                copyToClipboard(currentResponseData.token, document.getElementById('copyJwtBtn'), 'COPIED!');
+            } else {
+                alert('No JWT token available to copy');
+            }
+        }
+
+        function copyFullResponse() {
+            const el = document.getElementById('apiResponseDisplay');
+            if (el && el.innerText && el.innerText !== 'Waiting for response…') {
+                copyToClipboard(el.innerText, document.getElementById('copyFullResponseBtn'), 'COPIED!');
+            } else {
+                alert('No response data to copy');
+            }
+        }
+
+        function copyToClipboard(text, btn, msg) {
+            if (!text) return;
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(() => {
+                    showCopyFeedback(btn, msg);
+                }).catch(() => {
+                    fallbackCopy(text, btn, msg);
+                });
+            } else {
+                fallbackCopy(text, btn, msg);
+            }
+        }
+
+        function fallbackCopy(text, btn, msg) {
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            ta.style.position = 'fixed';
+            ta.style.opacity = '0';
+            document.body.appendChild(ta);
+            ta.select();
+            ta.setSelectionRange(0, 99999);
+            document.execCommand('copy');
+            document.body.removeChild(ta);
+            showCopyFeedback(btn, msg);
+        }
+
+        function showCopyFeedback(btn, msg) {
+            const orig = btn.innerHTML;
+            btn.innerHTML = `<i class="fas fa-check text-[10px]"></i> ${msg}`;
+            btn.classList.add('copy-btn-success');
+            setTimeout(() => {
+                btn.innerHTML = orig;
+                btn.classList.remove('copy-btn-success');
+            }, 1800);
+        }
+
+        // ── modal ──
+        function openModal(id) {
+            document.getElementById(id).classList.add('active');
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('active');
+        }
+
+        document.querySelectorAll('.modal-overlay').forEach(el => {
+            el.addEventListener('click', function(e) {
+                if (e.target === this) this.classList.remove('active');
+            });
+        });
+
+        // ── MAIN PROCESS ──
+        async function processToken() {
+            const input = tokenInp.value.trim();
+            const btn = document.getElementById('btn');
+            const out = document.getElementById('output');
+            const errBox = document.getElementById('error-box');
+            const errTitle = document.getElementById('error-title');
+            const errMsg = document.getElementById('error-message');
+
+            out.classList.add('hidden');
+            errBox.classList.add('hidden');
+            document.getElementById('bannerContainer').classList.add('hidden');
+            document.getElementById('jwtContainer').classList.add('hidden');
+            currentResponseData = null;
+
+            if (!input) {
+                tokenInp.focus();
+                return;
+            }
+
+            const eatToken = extractEatToken(input);
+            if (!eatToken) {
+                errTitle.innerText = 'Invalid Input';
+                errMsg.innerText = 'Please provide a valid URL or eat token.';
+                errBox.classList.remove('hidden');
+                return;
+            }
+
+            // ── show loading ──
+            showLoading('Extracting token…');
+
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> GENERATING…';
+            btn.disabled = true;
+
+            const apiUrl =
+                `https://access.killersharmabot.online/access?access_token=${encodeURIComponent(eatToken)}`;
+
+            try {
+                loaderStatus.textContent = 'Connecting to server…';
+                await sleep(400);
+
+                const resp = await fetch(apiUrl, { method: 'GET', headers: { 'Accept': 'application/json' } });
+                loaderStatus.textContent = 'Parsing response…';
+                await sleep(300);
+
+                const text = await resp.text();
+                let result;
+                try { result = JSON.parse(text); } catch (_) { result = { error: 'Invalid JSON response', raw: text }; }
+
+                currentResponseData = result;
+                document.getElementById('apiResponseDisplay').innerText = JSON.stringify(result, null, 2);
+
+                // access token
+                const extracted = result.access_token || null;
+                document.getElementById('accessTokenDisplay').innerText = extracted ||
+                'No access_token field in response';
+
+                // jwt
+                const jwt = result.token || null;
+                if (jwt) {
+                    document.getElementById('jwtTokenDisplay').innerText = jwt;
+                    document.getElementById('jwtContainer').classList.remove('hidden');
+                }
+
+                // errors
+                if (result.error === 'Check Your access Token') {
+                    errTitle.innerText = 'Invalid Token';
+                    errMsg.innerText = 'Your access token or eat token is invalid. Please login again.';
+                    errBox.classList.remove('hidden');
+                    hideLoading();
+                    btn.innerHTML = 'GENERATE ACCESS <i class="fas fa-arrow-right text-xs"></i>';
+                    btn.disabled = false;
+                    return;
+                }
+                if (result.error && result.error.includes('Failed to extract')) {
+                    errTitle.innerText = 'Invalid Token';
+                    errMsg.innerText = 'Wrong or expired eat token. Please login again.';
+                    errBox.classList.remove('hidden');
+                    hideLoading();
+                    btn.innerHTML = 'GENERATE ACCESS <i class="fas fa-arrow-right text-xs"></i>';
+                    btn.disabled = false;
+                    return;
+                }
+
+                // populate player data
+                if (result.nickname) document.getElementById('nick').innerText = result.nickname;
+                else if (result.accountId) document.getElementById('nick').innerText = 'User ' + result.accountId;
+
+                if (result.lockRegion) document.getElementById('reg').innerText = result.lockRegion;
+                else if (result.noti_region) document.getElementById('reg').innerText = result.noti_region;
+                else if (result.region) document.getElementById('reg').innerText = result.region;
+
+                if (result.accountId) document.getElementById('aid').innerText = result.accountId;
+                else if (result.account_id) document.getElementById('aid').innerText = result.account_id;
+                else if (result.uid) document.getElementById('aid').innerText = result.uid;
+
+                if (result.level) document.getElementById('level').innerText = result.level;
+
+                // banner
+                if (result.headPic && result.bannerId && result.nickname && result.level) {
+                    const bannerUrl =
+                        `https://image.killersharmabot.online/banner-image?headPic=${result.headPic}&bannerId=${result.bannerId}&name=${encodeURIComponent(result.nickname)}&level=${result.level}`;
+                    document.getElementById('bannerImage').src = bannerUrl;
+                    document.getElementById('bannerContainer').classList.remove('hidden');
+                }
+
+                out.classList.remove('hidden');
+                hideLoading();
+
+            } catch (err) {
+                console.error('Fetch error:', err);
+                errTitle.innerText = 'Network Error';
+                errMsg.innerText = 'Failed to connect to API. Please try again.';
+                errBox.classList.remove('hidden');
+                hideLoading();
+            }
+
+            btn.innerHTML = 'GENERATE ACCESS <i class="fas fa-arrow-right text-xs"></i>';
+            btn.disabled = false;
+        }
+
+        function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+        // ── auto-close loading if something goes wrong (safety) ──
+        window.addEventListener('load', function() {
+            // ensure loading is hidden on page load
+            hideLoading();
+        });
+    </script>
+
+</body>
+</html>
